@@ -35,14 +35,15 @@ int main()
 	do
 	{
 		system("cls");
-		printf("\n\n\t\tBienvenido al programa de lucha de engendros! (Ver. 0.1).\n\n");
+		printf("\n\n\t\tBienvenido al programa de lucha de engendros! (Ver. 0.2).\n\n");
 		printf("Seleccione una opcion:\n");
 		printf("1-Comenzar.\n");
 		printf("2-Ver engendros.\n");
 		printf("3-Añadir engendros.\n");
-		printf("4-Instrucciones.\n");
-		printf("5-Créditos.\n");
-		printf("6-Salir.\n");
+		printf("4-Modificar engendros.\n");
+		printf("5-Instrucciones.\n");
+		printf("6-Créditos.\n");
+		printf("7-Salir.\n");
 
 		sel = getch();
 		switch (sel)
@@ -57,12 +58,18 @@ int main()
 				masbichos(&numeng, &ptrengendro);
 				break;
 			case '4':
-				instrucciones();
+				modbichos(&numeng, &ptrengendro);
 				break;
 			case '5':
-				creditos();
+				instrucciones();
 				break;
 			case '6':
+				creditos();
+				break;
+			case '7':
+				database = fopen("database.dat", "wb");
+				fwrite(ptrengendro, sizeof(engendro), numeng, database);
+				fclose(database);
 				exit(0);
 			default:
 				system("cls");
@@ -71,9 +78,5 @@ int main()
 				break;
 		}
 	} while (1);
-
-	database = fopen("database.dat", "rb");
-	fwrite(ptrengendro, sizeof(engendro), numeng, database);
-	fclose(database);
 	return 0;
 }
