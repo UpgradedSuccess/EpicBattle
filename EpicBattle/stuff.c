@@ -1,5 +1,6 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "header.h"
 
 int batalla()
@@ -45,16 +46,6 @@ int verbichos(int numeng, engendro *ptrengendro)
 			cont = getch();
 			if (cont == 'n' || cont == 'N')
 				return 0;
-			printf("¿Quiere que se vuelva a mostrar la lista? (S/N)");
-			fflush(stdin);
-			cont1 = getch();
-			if (cont1 == 's' || cont1 == 'S')
-			{
-				system("cls");
-				for (k = 0; k < numeng; k++)
-					printf("%d-%s\n", k + 1, ptrengendro[k+1].nombre);
-				getch();
-			}
 			system("cls");
 		}
 	} while (numeng != 0 && cont == 's');
@@ -64,8 +55,8 @@ int verbichos(int numeng, engendro *ptrengendro)
 
 int masbichos(int *numeng, engendro **ptrengendro)
 {
-	char cont = 's';
 	engendro auxengendro;
+	char cont = 's';
 	system("cls");
 	printf("Ha elegido: Añadir engendros.\n");
 	do
@@ -79,7 +70,7 @@ int masbichos(int *numeng, engendro **ptrengendro)
 		scanf("%d", &auxengendro.hp);
 		(*numeng)++;
 		*ptrengendro = (engendro*)realloc(*ptrengendro, *numeng * sizeof(engendro));
-		strcpy ((*ptrengendro)[(*numeng) - 1].nombre, auxengendro.nombre);
+		strcpy((*ptrengendro)[(*numeng) - 1].nombre, auxengendro.nombre);
 		(*ptrengendro)[(*numeng) - 1].hp = auxengendro.hp;
 	} while (1);
 	return 0;
@@ -156,7 +147,7 @@ int modbichos(int *numeng, engendro **ptrengendro)
 				system("cls");
 				printf("Introduzca el nuevo HP para '%s': ", (*ptrengendro)[mod - 1].nombre);
 				fflush(stdin);
-				scanf("%d", (*ptrengendro)[mod-1].hp);
+				scanf("%d", &(*ptrengendro)[mod-1].hp);
 				printf("\n¿Desea modificar otro engendro? (S/N):");
 				sel1 = getch();
 				if (sel1 == 's' || sel1 == 'S')
