@@ -30,7 +30,16 @@ int verbichos(int numeng, engendro *ptrengendro)
 			scanf("%d", &info);
 			if (info == 0)
 				return 0;
+			if (info > numeng || info < 0)
+			{
+				system("cls");
+				printf("La cifra introducida no es correcta.");
+				getch();
+				fflush(stdin);
+				continue;
+			}
 			printf("Nombre: %s\n", ptrengendro[info-1].nombre);
+			printf("HP: %d\n", ptrengendro[info - 1].hp);
 			printf("(Por el momento no hay más información.)\n\n\n");
 			printf("¿Desea buscar otro engendro más? (S/N)\n");
 			cont = getch();
@@ -48,7 +57,7 @@ int verbichos(int numeng, engendro *ptrengendro)
 			}
 			system("cls");
 		}
-	} while (numeng != 0 && cont == "s");
+	} while (numeng != 0 && cont == 's');
 	getch();
 	return 0;
 }
@@ -66,9 +75,12 @@ int masbichos(int *numeng, engendro **ptrengendro)
 		scanf("%[^\n]s", auxengendro.nombre);
 		if (auxengendro.nombre[0] == '0')
 			return 0;
+		printf("Introduzca los hp del engendro: ");
+		scanf("%d", &auxengendro.hp);
 		(*numeng)++;
 		*ptrengendro = (engendro*)realloc(*ptrengendro, *numeng * sizeof(engendro));
 		strcpy ((*ptrengendro)[(*numeng) - 1].nombre, auxengendro.nombre);
+		(*ptrengendro)[(*numeng) - 1].hp = auxengendro.hp;
 	} while (1);
 	return 0;
 }
@@ -94,4 +106,74 @@ int creditos()
 	printf("Insultos y denuncias a: pro4myrkul@gmail.com\n");
 	getch();
 	return 0;
+}
+
+int modbichos(int *numeng, engendro **ptrengendro)
+{
+	int k, sel, mod;
+	char sel1;
+
+	do
+	{
+		system("cls");
+		printf("Ha elegido: Modificar engendros.\n\n");
+		for (k = 0; k < (*numeng); k++)
+			printf("%d-%s\n", k + 1, (*ptrengendro)[k].nombre);
+		printf("\nIntroduzca el número del engendro que desee modificar (0 para salir): ");
+		scanf("%d", &mod);
+		if (mod == 0)
+			return 0;
+		if (mod > (*numeng) || mod < 0)
+		{
+			system("cls");
+			printf("La cifra introducida no es correcta.");
+			getch();
+			fflush(stdin);
+			continue;
+		}
+		system("cls");
+		printf("Seleccionado: %s\n\n", (*ptrengendro)[mod-1].nombre);
+		printf("Elija una opción:\n\n");
+		printf("1-Modificar nombre.\n");
+		printf("2-Modificar HP.\n");
+		printf("3-Eliminar engendro.\n");
+		printf("4-Volver.");
+		sel = getch();
+		switch (sel)
+		{
+			case '1':
+				system("cls");
+				printf("Introduzca el nuevo nombre para '%s': ", (*ptrengendro)[mod - 1].nombre);
+				fflush(stdin);
+				scanf("%[^\n]s", (*ptrengendro)[mod - 1].nombre);
+				printf("\n¿Desea modificar otro engendro? (S/N):");
+				sel1 = getch();
+				if (sel1 == 's' || sel1 == 'S')
+					continue;
+				else
+					return 0;
+			case '2':
+				system("cls");
+				printf("Introduzca el nuevo HP para '%s': ", (*ptrengendro)[mod - 1].nombre);
+				fflush(stdin);
+				scanf("%d", (*ptrengendro)[mod-1].hp);
+				printf("\n¿Desea modificar otro engendro? (S/N):");
+				sel1 = getch();
+				if (sel1 == 's' || sel1 == 'S')
+					continue;
+				else
+					return 0;
+			case '3':
+				system("cls");
+				strcpy((*ptrengendro)[mod - 1].nombre, (*ptrengendro)[(*numeng) - 1].nombre);
+				(*ptrengendro)[mod - 1].hp = (*ptrengendro)[(*numeng) - 1].hp;
+				(*numeng)--;
+				printf("Eliminado.");
+				getch();
+			case '4':
+				continue;
+			default:
+				continue;
+		}
+	} while (1);
 }
